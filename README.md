@@ -1,4 +1,12 @@
-# TLS Bicho Peck – Launch Page
+
+
+# Peck – Launch Page
+
+![React](https://img.shields.io/badge/React-18-61DAFB?style=for-the-badge&logo=react&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite-5.4-646CFF?style=for-the-badge&logo=vite&logoColor=white)
+![Grommet](https://img.shields.io/badge/Grommet-UI-7D4CDB?style=for-the-badge&logo=grommet&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
+![Firebase](https://img.shields.io/badge/Firebase-Hosting-FFCA28?style=for-the-badge&logo=firebase&logoColor=black)
 
 A minimal redirect landing page for the TLS Bicho Peck experience. Built with Vite + React and deployed to Firebase Hosting.
 
