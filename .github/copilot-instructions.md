@@ -40,22 +40,24 @@ launch-image.png │ └─ firebase.json
 
 ## Firebase Setup
 
-Create src/firebase.js
+Create src/firebase.js pulls config from environment variables for security:
 
 ``` javascript
 import { initializeApp } from "firebase/app";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBayR3p_lVvbYe9FobRc2xFG9ORUnPTank",
-  authDomain: "tls-bicho-peck-launch.firebaseapp.com",
-  projectId: "tls-bicho-peck-launch",
-  storageBucket: "tls-bicho-peck-launch.firebasestorage.app",
-  messagingSenderId: "118396603091",
-  appId: "1:118396603091:web:a2aa4055debc053bf06226"
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID
 };
 
 export const app = initializeApp(firebaseConfig);
 ```
+
+**Important**: Store Firebase credentials in `.env` (not committed to git). See `.env.example` for required variables.
 
 Firebase is currently only required for hosting but should be
 initialized for future expansion.
