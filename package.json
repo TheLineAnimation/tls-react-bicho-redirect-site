@@ -7,18 +7,22 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "deploy": "npm run build && firebase deploy"
+    "deploy:staging": "npm run build && firebase hosting:channel:deploy staging --expires 7d --project tls-bicho-peck-launch",
+    "deploy": "npm run build && firebase deploy --only hosting --project tls-bicho-peck-launch"
   },
   "dependencies": {
     "firebase": "^10.0.0",
     "grommet": "^2.34.0",
     "grommet-icons": "^4.12.0",
+    "gsap": "^3.14.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "styled-components": "^6.0.0"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.0.0",
+    "fs-extra": "^11.3.4",
+    "sharp": "^0.34.5",
     "vite": "^5.0.0"
   }
 }
