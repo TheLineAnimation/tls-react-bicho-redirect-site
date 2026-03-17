@@ -1,6 +1,4 @@
-# Deaths of Peck
-
-![logo](https://github.com/TheLineAnimation/tls-react-bicho-redirect-site/raw/main/public/images/WEB_logo-800.webp)
+<img src="https://github.com/TheLineAnimation/tls-react-bicho-redirect-site/raw/main/public/images/WEB_logo-800.webp" width="50%" alt="logo" />
 
 ![React](https://img.shields.io/badge/React-18-61DAFB?style=for-the-badge&logo=react&logoColor=white)
 ![Vite](https://img.shields.io/badge/Vite-5.4-646CFF?style=for-the-badge&logo=vite&logoColor=white)
@@ -8,15 +6,14 @@
 ![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Firebase](https://img.shields.io/badge/Firebase-Hosting-FFCA28?style=for-the-badge&logo=firebase&logoColor=black)
 
-A minimal launch landing page for Deaths of Peck. Built with Vite + React + Grommet, deployed to Firebase Hosting.
+A landing page for Deaths of Peck. Built with Vite + React + Grommet, deployed to Firebase Hosting.
 
 ## What it does
 
 - Full-screen background image (responsive AVIF/WebP) or flat colour fallback
-- Responsive logo image
+- Responsive images and site layout
 - Vimeo video embed (16:9, optional)
-- Decorative character image
-- Animated wishlist button (GSAP elastic bounce on hover)
+
 - All content controlled via `.env` — no code changes needed to update the page
 
 ## Stack
