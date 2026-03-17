@@ -1,4 +1,4 @@
-<img src="https://github.com/TheLineAnimation/tls-react-bicho-redirect-site/raw/main/public/images/WEB_logo-800.webp" width="50%" alt="logo" />
+<div align="center"><img src="https://github.com/TheLineAnimation/tls-react-bicho-redirect-site/raw/main/public/images/WEB_logo-800.webp" width="50%" alt="logo" /></div>
 
 ![React](https://img.shields.io/badge/React-18-61DAFB?style=for-the-badge&logo=react&logoColor=white)
 ![Vite](https://img.shields.io/badge/Vite-5.4-646CFF?style=for-the-badge&logo=vite&logoColor=white)
