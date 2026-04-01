@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useRef } from "react";
 import { Box, Button, Text, Grommet } from "grommet";
 import { gsap } from "gsap";
 import { BackgroundBox } from "./BackgroundBox";
@@ -49,25 +49,11 @@ function bounceTween(el) {
 }
 
 function App() {
-  const [isLandscape, setIsLandscape] = useState(
-    () => window.innerWidth > window.innerHeight
-  );
   const bounceRef = useRef(null);
   const videoRef = useRef(null);
 
-  useEffect(() => {
-    const handler = () =>
-      setIsLandscape(window.innerWidth > window.innerHeight);
-    window.addEventListener("resize", handler);
-    return () => window.removeEventListener("resize", handler);
-  }, []);
-
-  // Portrait: one shared column width drives all three elements (logo, video, CTA same width)
-  // Landscape: each element gets its own vw fraction; video gets the majority
-  const pW = "clamp(260px, 80vw, 420px)";
-  const lWlogo = "clamp(160px, 26vw, 380px)";
-  const lWvideo = "clamp(240px, 38vw, 620px)";
-  const lWcta = "clamp(140px, 22vw, 340px)";
+  // All elements share the same column width for a consistent portrait stack
+  const w = "clamp(260px, 80vw, 420px)";
 
   return (
     <Grommet theme={theme} full>
@@ -75,10 +61,10 @@ function App() {
         fill
         name={BG_NAME || undefined}
         onClick={REDIRECT_ALL ? handleLaunch : undefined}
-        direction={isLandscape ? "row" : "column"}
+        direction="column"
         align="center"
         justify="center"
-        gap={isLandscape ? "16px" : "20px"}
+        gap="20px"
         pad="16px"
         background={background}
         style={{ overflow: "hidden", boxSizing: "border-box", cursor: REDIRECT_ALL ? "pointer" : undefined }}
@@ -88,13 +74,13 @@ function App() {
           <ResponsiveImage
             name={LOGO_IMAGE}
             alt="TLS Bicho Peck logo"
-            style={{ width: isLandscape ? lWlogo : pW, flexShrink: 0, lineHeight: 0 }}
+            style={{ width: w, flexShrink: 0, lineHeight: 0 }}
           />
         ) : (
           <img
             src={launchImage}
             alt="TLS Bicho Peck logo"
-            style={{ width: isLandscape ? lWlogo : pW, height: "auto", display: "block", flexShrink: 0 }}
+            style={{ width: w, height: "auto", display: "block", flexShrink: 0 }}
           />
         )}
 
@@ -102,7 +88,7 @@ function App() {
         {VIMEO_ID && (
           <div
             style={{
-              width: isLandscape ? lWvideo : pW,
+              width: w,
               aspectRatio: "16 / 9",
               flexShrink: 0,
               borderRadius: "8px",
@@ -136,7 +122,7 @@ function App() {
               <ResponsiveImage
                 name={WISHLIST_IMAGE}
                 alt="Wishlist now"
-                style={{ width: isLandscape ? lWcta : pW, cursor: "pointer" }}
+                style={{ width: w, cursor: "pointer" }}
               />
             </div>
           </Button>
