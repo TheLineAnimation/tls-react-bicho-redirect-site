@@ -83,13 +83,13 @@ function App() {
           <ResponsiveImage
             name={LOGO_IMAGE}
             alt="TLS Bicho Peck logo"
-            style={{ width: `clamp(180px, min(30vw, 22vh), ${LOGO_WIDTH})`, maxWidth: "100%" }}
+            style={{ width: `clamp(320px, min(30vw, 22vh), ${LOGO_WIDTH})`, maxWidth: "100%" }}
           />
         ) : (
           <img
             src={launchImage}
             alt="TLS Bicho Peck logo"
-            style={{ width: `clamp(180px, min(30vw, 22vh), ${LOGO_WIDTH})`, maxWidth: "100%", display: "block" }}
+            style={{ width: `clamp(320px, min(30vw, 22vh), ${LOGO_WIDTH})`, maxWidth: "100%", display: "block" }}
           />
         )}
 
@@ -98,6 +98,7 @@ function App() {
             style={{
               width: `min(clamp(280px, 60vw, 800px), calc(16 / 9 * 45vh))`,
               maxWidth: "100%",
+              flexShrink: 0,
               borderRadius: "8px",
               overflow: "hidden",
               boxShadow: "0 4px 24px rgba(0,0,0,0.3)",
@@ -107,7 +108,7 @@ function App() {
           >
             <iframe
               ref={videoRef}
-              src={`https://player.vimeo.com/video/${VIMEO_ID}?title=0&byline=0&portrait=0&dnt=1&autoplay=0&muted=0`}
+              src={`https://player.vimeo.com/video/${VIMEO_ID}?title=0&byline=0&portrait=0&dnt=1&autoplay=1&muted=0`}
               style={{ display: "block", width: "100%", aspectRatio: "16 / 9", border: "none" }}
               allow="autoplay; fullscreen; picture-in-picture"
               allowFullScreen
@@ -130,7 +131,7 @@ function App() {
                 <ResponsiveImage
                   name={WISHLIST_IMAGE}
                   alt="Wishlist now"
-                  style={{ width: `clamp(360px, min(40vw, 22vh), ${WISHLIST_WIDTH})`, maxWidth: "100%", cursor: "pointer" }}
+                  style={{ width: `clamp(460px, min(40vw, 22vh), ${WISHLIST_WIDTH})`, maxWidth: "100%", cursor: "pointer" }}
                 />
               </div>
             </Button>
@@ -141,13 +142,13 @@ function App() {
             <ResponsiveImage
               name={BUTTON_IMAGE}
               alt="Peck character"
-              style={{ width: `clamp(80px, min(25vw, 18vh), ${BUTTON_WIDTH})`, maxWidth: "100%" }}
+              style={{ width: `clamp(140px, min(25vw, 18vh), ${BUTTON_WIDTH})`, maxWidth: "100%" }}
             />
           ) : (
             <img
               src={buttonImage}
               alt="Peck character"
-              style={{ width: `clamp(80px, min(25vw, 18vh), ${BUTTON_WIDTH})`, maxWidth: "100%", display: "block" }}
+              style={{ width: `clamp(140px, min(25vw, 18vh), ${BUTTON_WIDTH})`, maxWidth: "100%", display: "block" }}
             />
           )}
 
