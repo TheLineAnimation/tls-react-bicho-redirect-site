@@ -29,6 +29,7 @@ const background = BG_IMAGE ? undefined : BG_COLOR;
 const OuterBox = BG_NAME ? BackgroundBox : Box;
 
 const SHORT_SCREEN_THRESHOLD = 600;
+const isLandscape = () => window.innerWidth > window.innerHeight;
 
 const theme = {
   global: {
@@ -54,14 +55,14 @@ function bounceTween(el) {
 
 function App() {
   const [isShortScreen, setIsShortScreen] = useState(
-    () => window.innerHeight < SHORT_SCREEN_THRESHOLD
+    () => window.innerHeight < SHORT_SCREEN_THRESHOLD || isLandscape()
   );
   const bounceRef = useRef(null);
   const videoRef = useRef(null);
 
   useEffect(() => {
     const handler = () =>
-      setIsShortScreen(window.innerHeight < SHORT_SCREEN_THRESHOLD);
+      setIsShortScreen(window.innerHeight < SHORT_SCREEN_THRESHOLD || isLandscape());
     window.addEventListener("resize", handler);
     return () => window.removeEventListener("resize", handler);
   }, []);
@@ -131,7 +132,7 @@ function App() {
                 <ResponsiveImage
                   name={WISHLIST_IMAGE}
                   alt="Wishlist now"
-                  style={{ width: `clamp(460px, min(40vw, 22vh), ${WISHLIST_WIDTH})`, maxWidth: "100%", cursor: "pointer" }}
+                  style={{ width: `clamp(160px, min(40vw, 22vh), ${WISHLIST_WIDTH})`, maxWidth: "100%", cursor: "pointer" }}
                 />
               </div>
             </Button>
@@ -142,13 +143,13 @@ function App() {
             <ResponsiveImage
               name={BUTTON_IMAGE}
               alt="Peck character"
-              style={{ width: `clamp(140px, min(25vw, 18vh), ${BUTTON_WIDTH})`, maxWidth: "100%" }}
+              style={{ width: `clamp(60px, min(25vw, 18vh), ${BUTTON_WIDTH})`, maxWidth: "100%" }}
             />
           ) : (
             <img
               src={buttonImage}
               alt="Peck character"
-              style={{ width: `clamp(140px, min(25vw, 18vh), ${BUTTON_WIDTH})`, maxWidth: "100%", display: "block" }}
+              style={{ width: `clamp(60px, min(25vw, 18vh), ${BUTTON_WIDTH})`, maxWidth: "100%", display: "block" }}
             />
           )}
 
