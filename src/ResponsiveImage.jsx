@@ -7,7 +7,7 @@ function ceilingBreakpoint(width) {
   return BREAKPOINTS.find(bp => bp >= width) ?? BREAKPOINTS[BREAKPOINTS.length - 1];
 }
 
-export const ResponsiveImage = ({ name, alt = "", style, ...props }) => {
+export const ResponsiveImage = ({ name, alt = "", style, imgStyle, ...props }) => {
   const [width, setWidth] = useState(
     typeof window !== "undefined" ? window.innerWidth : 1280
   );
@@ -27,7 +27,7 @@ export const ResponsiveImage = ({ name, alt = "", style, ...props }) => {
       <img
         src={`/images/${name}-1280.webp`}
         alt={alt}
-        style={{ width: "100%", height: "auto", display: "block" }}
+        style={{ width: "100%", height: "auto", display: "block", ...imgStyle }}
         {...props}
       />
     </picture>
