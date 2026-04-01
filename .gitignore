@@ -34,7 +34,3 @@ site_images/masters/*.avi
 
 # Cache
 .cache/
-
-# Accidental script output (generated when running scripts from wrong cwd)
-scripts/public/
-scripts/site_images/

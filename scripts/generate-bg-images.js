@@ -2,9 +2,12 @@
 import sharp from "sharp";
 import fs from "fs-extra";
 import path from "path";
+import { fileURLToPath } from "url";
 
-const inputDir = "./site_images/masters";  // folder with your PNGs
-const outputDir = "./public/images";          // served at /images/ by Vite
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+const inputDir = path.join(__dirname, "site_images/masters");  // folder with your PNGs
+const outputDir = path.join(__dirname, "../public/images");    // served at /images/ by Vite
 const sizes = [800, 1280, 1600, 1920]; // responsive widths
 
 async function processImage(fileName) {
