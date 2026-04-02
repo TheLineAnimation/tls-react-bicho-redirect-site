@@ -54,6 +54,10 @@ function App() {
 
   // All elements share the same column width for a consistent portrait stack
   const w = "clamp(260px, 80vw, 420px)";
+  // Logo and CTA scale down on short screens via svh cap; logo gets an extra-aggressive cap
+  const logoBase = "clamp(260px, 80vw, 400px)";
+  const logoW = `min(${logoBase}, 36svh)`;
+  const ctaW  = `min(${w}, 38svh)`;
 
   return (
     <Grommet theme={theme} full>
@@ -74,13 +78,13 @@ function App() {
           <ResponsiveImage
             name={LOGO_IMAGE}
             alt="TLS Bicho Peck logo"
-            style={{ width: w, flexShrink: 0, lineHeight: 0 }}
+            style={{ width: logoW, flexShrink: 0, lineHeight: 0 }}
           />
         ) : (
           <img
             src={launchImage}
             alt="TLS Bicho Peck logo"
-            style={{ width: w, height: "auto", display: "block", flexShrink: 0 }}
+            style={{ width: logoW, height: "auto", display: "block", flexShrink: 0 }}
           />
         )}
 
@@ -122,7 +126,7 @@ function App() {
               <ResponsiveImage
                 name={WISHLIST_IMAGE}
                 alt="Wishlist now"
-                style={{ width: w, cursor: "pointer" }}
+                style={{ width: ctaW, cursor: "pointer" }}
               />
             </div>
           </Button>
