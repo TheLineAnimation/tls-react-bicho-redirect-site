@@ -1,5 +1,4 @@
-<div align="center"><img src="https://github.com/user-attachments/assets/db00511a-1975-4d27-8c42-421a6f20b770" width="50%" alt="logo" /></div>
-
+<div align="center"><img src="https://github.com/user-attachments/assets/91ce06ce-9307-423e-973c-0e6a26a1abef" width="80%" alt="logo" /></div>
 
 ![React](https://img.shields.io/badge/React-18-61DAFB?style=for-the-badge&logo=react&logoColor=white)
 ![Vite](https://img.shields.io/badge/Vite-5.4-646CFF?style=for-the-badge&logo=vite&logoColor=white)
@@ -117,4 +116,6 @@ For the holding page, copy `.env.holding` — `VITE_WISHLIST_IMAGE`, `VITE_VIMEO
 | `VITE_VIMEO_ID` | Vimeo video ID (numbers only) | *(video hidden)* |
 | `VITE_TEXT_BLOCK` | Text shown below button | *(hidden)* |
 | `VITE_REDIRECT_ALL` | Click anywhere to redirect | `false` |
+
+<div align="center"><img src="https://github.com/user-attachments/assets/db00511a-1975-4d27-8c42-421a6f20b770" width="30%" alt="logo" /></div>
 
