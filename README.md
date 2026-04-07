@@ -1,12 +1,10 @@
-<div align="center"><img src="https://github.com/user-attachments/assets/91ce06ce-9307-423e-973c-0e6a26a1abef" width="80%" alt="logo" /></div>
+<div align="center"><img src="https://github.com/user-attachments/assets/91ce06ce-9307-423e-973c-0e6a26a1abef" width="100%" alt="logo" /></div>
 
 ![React](https://img.shields.io/badge/React-18-61DAFB?style=for-the-badge&logo=react&logoColor=white)
 ![Vite](https://img.shields.io/badge/Vite-5.4-646CFF?style=for-the-badge&logo=vite&logoColor=white)
 ![Grommet](https://img.shields.io/badge/Grommet-UI-7D4CDB?style=for-the-badge&logo=grommet&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Firebase](https://img.shields.io/badge/Firebase-Hosting-FFCA28?style=for-the-badge&logo=firebase&logoColor=black)
-
-A landing page for Deaths of Peck. Built with Vite + React + Grommet, deployed to Firebase Hosting.
 
 ## Site Features
 

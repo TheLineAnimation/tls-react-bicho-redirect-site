@@ -49,9 +49,9 @@ function bounceTween(el) {
 }
 
 function useDesktop() {
-  const [isDesktop, setIsDesktop] = React.useState(() => window.matchMedia("(min-width: 1024px)").matches);
+  const [isDesktop, setIsDesktop] = React.useState(() => window.matchMedia("(min-width: 1024px) and (min-height: 680px)").matches);
   React.useEffect(() => {
-    const mq = window.matchMedia("(min-width: 1024px)");
+    const mq = window.matchMedia("(min-width: 1024px) and (min-height: 680px)");
     const handler = (e) => setIsDesktop(e.matches);
     mq.addEventListener("change", handler);
     return () => mq.removeEventListener("change", handler);
