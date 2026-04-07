@@ -1,4 +1,5 @@
-<div align="center"><img src="https://github.com/TheLineAnimation/tls-react-bicho-redirect-site/raw/main/public/images/WEB_logo-800.webp" width="50%" alt="logo" /></div>
+<div align="center"><img src="https://github.com/user-attachments/assets/db00511a-1975-4d27-8c42-421a6f20b770" width="50%" alt="logo" /></div>
+
 
 ![React](https://img.shields.io/badge/React-18-61DAFB?style=for-the-badge&logo=react&logoColor=white)
 ![Vite](https://img.shields.io/badge/Vite-5.4-646CFF?style=for-the-badge&logo=vite&logoColor=white)
@@ -8,13 +9,13 @@
 
 A landing page for Deaths of Peck. Built with Vite + React + Grommet, deployed to Firebase Hosting.
 
-## What it does
+## Site Features
 
 - Full-screen background image (responsive AVIF/WebP) or flat colour fallback
 - Responsive images and site layout
 - Vimeo video embed (16:9, optional)
-
 - All content controlled via `.env` — no code changes needed to update the page
+- pre-launch sandbox and full release sites
 
 ## Stack
 
@@ -41,6 +42,12 @@ A landing page for Deaths of Peck. Built with Vite + React + Grommet, deployed t
    npm run dev
    ```
 
+   To preview the holding page (logo only):
+
+   ```
+   npm run dev:holding
+   ```
+
 ## Image assets
 
 Responsive images (logo, background, character, wishlist button) live in `public/images/` and are generated from source PNGs:
@@ -52,21 +59,50 @@ Responsive images (logo, background, character, wishlist button) live in `public
    ```
    This outputs AVIF + WebP variants at 800 / 1280 / 1600 / 1920px widths into `public/images/`.
 
+The component `ResponsiveImage.jsx` uses these to serve the most efficient media for different screen resolutions. 
+
 ## Deploy
 
 ```bash
-# Deploy to staging preview channel (expires 7 days)
+# Develop locally (full launch site)
+npm run dev
+
+# Develop locally (holding page — logo only)
+npm run dev:holding
+
+# Deploy the full launch site to staging preview channel (expires 7 days)
 npm run deploy:staging
 
-# Deploy to live production
+# Deploy holding page to production (logo only, no video or CTA)
+npm run deploy:holding
+
+# Deploy full launch site to production
 npm run deploy
 ```
 
 Builds to `dist/` and pushes to Firebase Hosting. Requires `firebase-tools` installed globally and authenticated via `firebase login`.
 
+The holding and production builds are driven by separate env files (`.env.holding` and `.env`) — no code changes needed to switch between them.
+
+## Holding Site
+
+To allow domain binding, we are able to deploy a clean holding page to the site, ready for the full deploy later on
+
+<div align="center"><img src="https://github.com/user-attachments/assets/c2b0c321-0e8b-4154-9696-c8bcf608bc43" width="70%" alt="holding site" /></div>
+
+## Launch Site
+
+The launch site can be deployed to a `staging` link via the command `npm run deploy:staging` before full deployment.
+
+<div align="center"><img src="https://github.com/user-attachments/assets/08e02c28-c83c-4286-9992-28aab536b2d0" width="70%" alt="launch site" /></div>
+
 ## Environment variables
 
 Copy `.env.example` to `.env`. All image values are bare filenames (no extension) matching files in `public/images/`.
+
+For the holding page, copy `.env.holding` — `VITE_WISHLIST_IMAGE`, `VITE_VIMEO_ID` are left blank so those elements are hidden.
+
+
 
 | Variable | Description | Default |
 |---|---|---|
@@ -76,10 +112,9 @@ Copy `.env.example` to `.env`. All image values are bare filenames (no extension
 | `VITE_USE_BG` | Background image name from `public/images/` | *(flat colour)* |
 | `VITE_LOGO_IMAGE` | Logo image name | *(bundled fallback)* |
 | `VITE_LOGO_WIDTH` | Max logo width | `400px` |
-| `VITE_BUTTON_IMAGE` | Decorative character image name | *(bundled fallback)* |
-| `VITE_BUTTON_WIDTH` | Max character image width | `300px` |
-| `VITE_WISHLIST_IMAGE` | Wishlist button image name | *(hidden)* |
+| `VITE_WISHLIST_IMAGE` | Wishlist/CTA button image name | *(hidden)* |
 | `VITE_WISHLIST_WIDTH` | Max wishlist image width | `400px` |
 | `VITE_VIMEO_ID` | Vimeo video ID (numbers only) | *(video hidden)* |
 | `VITE_TEXT_BLOCK` | Text shown below button | *(hidden)* |
+| `VITE_REDIRECT_ALL` | Click anywhere to redirect | `false` |
 

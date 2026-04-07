@@ -6,6 +6,7 @@ dist/
 
 # environment variables
 .env
+.env.holding
 .env.local
 .env.*.local
 
