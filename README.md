@@ -19,12 +19,12 @@ A landing page for Deaths of Peck. Built with Vite + React + Grommet, deployed t
 
 ## Stack
 
-- **Vite** – build tool
-- **React** (JSX) – UI
-- **Grommet** – component library / layout
-- **GSAP** – button hover animation
-- **sharp** – image pre-processing script
-- **Firebase Hosting** – deployment
+- **[Vite](https://vitejs.dev/)** – build tool
+- **[React](https://react.dev/)** (JSX) – UI
+- **[Grommet](https://v2.grommet.io/)** – component library / layout
+- **[GSAP](https://gsap.com/)** – button hover animation
+- **[sharp](https://sharp.pixelplumbing.com/)** – image pre-processing script
+- **[Firebase Hosting](https://firebase.google.com/docs/hosting)** – deployment
 
 ## Setup
 

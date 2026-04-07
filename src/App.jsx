@@ -48,16 +48,32 @@ function bounceTween(el) {
     .to(el, { scale: 1,    duration: 0.8,  ease: "elastic.out(1, 0.35)" });
 }
 
+function useDesktop() {
+  const [isDesktop, setIsDesktop] = React.useState(() => window.matchMedia("(min-width: 1024px)").matches);
+  React.useEffect(() => {
+    const mq = window.matchMedia("(min-width: 1024px)");
+    const handler = (e) => setIsDesktop(e.matches);
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
+  return isDesktop;
+}
+
 function App() {
   const bounceRef = useRef(null);
   const videoRef = useRef(null);
+  const isDesktop = useDesktop();
 
-  // All elements share the same column width for a consistent portrait stack
-  const w = "clamp(260px, 80vw, 420px)";
-  // Logo and CTA scale down on short screens via svh cap; logo gets an extra-aggressive cap
-  const logoBase = "clamp(260px, 80vw, 400px)";
+  // Logo: 25% smaller on desktop
+  const logoBase = isDesktop ? "clamp(200px, 25vw, 300px)" : "clamp(260px, 80vw, 400px)";
   const logoW = `min(${logoBase}, 36svh)`;
-  const ctaW  = `min(${w}, 38svh)`;
+
+  // Video: 50% larger on desktop
+  const videoW = isDesktop ? "clamp(260px, 55vw, 720px)" : "clamp(260px, 80vw, 420px)";
+
+  // CTA unchanged
+  const ctaBase = "clamp(260px, 80vw, 420px)";
+  const ctaW = `min(${ctaBase}, 38svh)`;
 
   return (
     <Grommet theme={theme} full>
@@ -92,7 +108,7 @@ function App() {
         {VIMEO_ID && (
           <div
             style={{
-              width: w,
+              width: videoW,
               aspectRatio: "16 / 9",
               flexShrink: 0,
               borderRadius: "8px",
