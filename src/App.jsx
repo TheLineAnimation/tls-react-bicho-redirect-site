@@ -21,10 +21,23 @@ const REDIRECT_ALL = import.meta.env.VITE_REDIRECT_ALL === "true";
 // Strip file extension if present — component builds its own paths
 const BG_NAME = BG_IMAGE.replace(/\.[^.]+$/, "");
 
-const background = BG_IMAGE ? undefined : BG_COLOR;
+// Zoom applied to moving parallax layers to prevent edge bleed
+const BG_ZOOM = parseFloat(import.meta.env.VITE_BG_ZOOM) || 1.05;
 
-// Use BackgroundBox for image bg, plain Box for colour bg
-const OuterBox = BG_NAME ? BackgroundBox : Box;
+// Parse VITE_BG_LAYERS: comma-separated "name:depth" pairs
+// e.g. "PX01_LAYER:0.1,PX02_LAYER:0.4,PX03_LAYER:0.9"
+const BG_LAYERS_RAW = import.meta.env.VITE_BG_LAYERS || "";
+const BG_LAYERS = BG_LAYERS_RAW
+  ? BG_LAYERS_RAW.split(",").map(entry => {
+      const [n, d] = entry.trim().split(":");
+      return { name: n.trim(), depth: parseFloat(d) || 0 };
+    })
+  : null;
+
+const background = (BG_NAME || BG_LAYERS) ? undefined : BG_COLOR;
+
+// Use BackgroundBox for image bg (layers or single), plain Box for colour bg
+const OuterBox = (BG_NAME || BG_LAYERS) ? BackgroundBox : Box;
 
 const theme = {
   global: {
@@ -79,7 +92,9 @@ function App() {
     <Grommet theme={theme} full>
       <OuterBox
         fill
-        name={BG_NAME || undefined}
+        name={BG_LAYERS ? undefined : (BG_NAME || undefined)}
+        layers={BG_LAYERS || undefined}
+        zoom={BG_ZOOM}
         onClick={REDIRECT_ALL ? handleLaunch : undefined}
         direction="column"
         align="center"

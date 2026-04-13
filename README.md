@@ -70,6 +70,9 @@ npm run dev:holding
 # Deploy the full launch site to staging preview channel (expires 7 days)
 npm run deploy:staging
 
+# Deploy the holding page to staging preview channel (expires 7 days)
+npm run build:holding && firebase hosting:channel:deploy staging --expires 7d --project tls-bicho-peck-launch
+
 # Deploy holding page to production (logo only, no video or CTA)
 npm run deploy:holding
 
@@ -106,7 +109,9 @@ For the holding page, copy `.env.holding` — `VITE_WISHLIST_IMAGE`, `VITE_VIMEO
 | `VITE_TARGET_URL` | Redirect URL for the main CTA | `https://example.com` |
 | `VITE_BG_COLOR` | Background colour fallback | `#ffb524` |
 | `VITE_TEXT_COLOR` | Text colour | `#ff003c` |
-| `VITE_USE_BG` | Background image name from `public/images/` | *(flat colour)* |
+| `VITE_USE_BG` | Single static background image name from `public/images/` | *(flat colour)* |
+| `VITE_BG_LAYERS` | Comma-separated `name:depth` pairs for parallax layers e.g. `PX01_LAYER:0.1,PX02_LAYER:0.4,PX03_LAYER:0.9` — overrides `VITE_USE_BG` | *(none)* |
+| `VITE_BG_ZOOM` | Scale applied to moving parallax layers to prevent edge bleed | `1.05` |
 | `VITE_LOGO_IMAGE` | Logo image name | *(bundled fallback)* |
 | `VITE_LOGO_WIDTH` | Max logo width | `400px` |
 | `VITE_WISHLIST_IMAGE` | Wishlist/CTA button image name | *(hidden)* |
