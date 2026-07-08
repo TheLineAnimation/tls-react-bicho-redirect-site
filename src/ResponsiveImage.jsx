@@ -7,7 +7,7 @@ function ceilingBreakpoint(width) {
   return BREAKPOINTS.find(bp => bp >= width) ?? BREAKPOINTS[BREAKPOINTS.length - 1];
 }
 
-export const ResponsiveImage = ({ name, alt = "", style, imgStyle, ...props }) => {
+export const ResponsiveImage = ({ name, alt = "", fallback, style, imgStyle, ...props }) => {
   const [width, setWidth] = useState(
     typeof window !== "undefined" ? window.innerWidth : 1280
   );
@@ -19,13 +19,17 @@ export const ResponsiveImage = ({ name, alt = "", style, imgStyle, ...props }) =
   }, []);
 
   const nearest = ceilingBreakpoint(width);
+  
+  // Use provided fallback (PNG/JPG), or fall back to avif
+  const fallbackSrc = fallback 
+    ? (fallback.startsWith("/") ? fallback : `/images/${fallback}`)
+    : `/images/${name}-1280.avif`;
 
   return (
     <picture style={{ display: "block", ...style }}>
       <source srcSet={`/images/${name}-${nearest}.avif`} type="image/avif" />
-      <source srcSet={`/images/${name}-${nearest}.webp`} type="image/webp" />
       <img
-        src={`/images/${name}-1280.webp`}
+        src={fallbackSrc}
         alt={alt}
         style={{ width: "100%", height: "auto", display: "block", ...imgStyle }}
         {...props}

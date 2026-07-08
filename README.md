@@ -8,6 +8,7 @@
 
 ## Site Features
 
+- Press kit with downloadable screenshots, promo art, and videos
 - Full-screen background image (responsive AVIF/WebP) or flat colour fallback
 - Responsive images and site layout
 - Vimeo video embed (16:9, optional)
@@ -22,6 +23,7 @@
 - **[GSAP](https://gsap.com/)** – button hover animation
 - **[sharp](https://sharp.pixelplumbing.com/)** – image pre-processing script
 - **[Firebase Hosting](https://firebase.google.com/docs/hosting)** – deployment
+- **[Firebase Storage](https://firebase.google.com/docs/storage)** – large media files (press kit videos, screenshots, promo art)
 
 ## Setup
 
@@ -56,7 +58,53 @@ Responsive images (logo, background, character, wishlist button) live in `public
    ```
    This outputs AVIF + WebP variants at 800 / 1280 / 1600 / 1920px widths into `public/images/`.
 
-The component `ResponsiveImage.jsx` uses these to serve the most efficient media for different screen resolutions. 
+The component `ResponsiveImage.jsx` uses these to serve the most efficient media for different screen resolutions.
+
+## Press kit media (Firebase Storage)
+
+Large downloadable assets — press kit videos, full-resolution screenshots, and promo art — are served from Firebase Storage rather than Firebase Hosting to keep Hosting bandwidth usage low.
+
+### Adding / updating files
+
+Upload files to your Firebase Storage bucket via the [Firebase Console](https://console.firebase.google.com) or the `gsutil`/`gcloud` CLI. After uploading, copy the public HTTPS download URL and update the corresponding `downloadUrl` entry in `src/pressKitData.js`.
+
+Firebase Storage URLs follow this pattern:
+
+```
+https://firebasestorage.googleapis.com/v0/b/YOUR_BUCKET/o/FOLDER%2Ffilename.ext?alt=media
+```
+
+- `%2F` is the URL-encoded path separator `/`
+- `?alt=media` is required — without it the browser receives JSON metadata instead of the file
+
+### Storage rules
+
+Files must be publicly readable. Set your Storage rules to:
+
+```
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    match /{allPaths=**} {
+      allow read: if true;
+      allow write: if false;
+    }
+  }
+}
+```
+
+### CORS configuration
+
+Browsers block cross-origin `fetch()` requests unless the bucket has CORS configured. The `cors.json` file at the project root defines the required policy. Apply it once (or whenever the bucket changes) with:
+
+```bash
+# Google Cloud SDK
+gcloud storage buckets update gs://YOUR_BUCKET --cors-file=cors.json
+# or
+gsutil cors set cors.json gs://YOUR_BUCKET
+```
+
+Without this, individual file downloads in the press kit will open in a new browser tab instead of saving to disk.
 
 ## Deploy
 

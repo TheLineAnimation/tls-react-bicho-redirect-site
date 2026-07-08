@@ -45,6 +45,32 @@ const PK_LAYERS = [
 ];
 const MAX_PARALLAX = 160; // px — must match the top/height buffer on layer divs
 
+// Force a file download even for cross-origin URLs (e.g. Firebase Storage).
+// The <a download> attribute is silently ignored by browsers for cross-origin
+// requests, so we fetch the bytes locally and create a same-origin blob URL.
+async function downloadFile(url) {
+  try {
+    const res = await fetch(url);
+    const blob = await res.blob();
+    const blobUrl = URL.createObjectURL(blob);
+    // Firebase Storage URLs encode the object path after /o/ — decode it to get the real filename.
+    // e.g. .../o/screenshots%2Fdeaths_of_peck_screenshot_01.png?alt=media → deaths_of_peck_screenshot_01.png
+    const pathPart = url.split("?")[0];
+    const objectPath = pathPart.includes("/o/") ? pathPart.split("/o/").pop() : pathPart.split("/").pop();
+    const filename = decodeURIComponent(objectPath).split("/").pop();
+    const a = document.createElement("a");
+    a.href = blobUrl;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(blobUrl);
+  } catch {
+    // Fallback: open in new tab if fetch fails
+    window.open(url, "_blank");
+  }
+}
+
 function bounceTween(el) {
   if (!el) return;
   gsap.killTweensOf(el);
@@ -61,6 +87,30 @@ const theme = {
     colors: { brand: BRAND },
   },
 };
+
+// ── Single-file download button — shows feedback while blob is fetching ──────
+function DownloadFileButton({ url, label = "Download", style: extraStyle }) {
+  const [status, setStatus] = React.useState("idle"); // idle | fetching | done
+  const handleClick = async () => {
+    if (status === "fetching") return;
+    setStatus("fetching");
+    await downloadFile(url);
+    setStatus("idle");
+  };
+  const fetching = status === "fetching";
+  return (
+    <button
+      onClick={handleClick}
+      disabled={fetching}
+      style={{ ...dlBtnStyle, ...extraStyle, opacity: fetching ? 0.7 : 1, cursor: fetching ? "wait" : "pointer" }}
+      onMouseEnter={!fetching ? dlHoverIn : undefined}
+      onMouseLeave={!fetching ? dlHoverOut : undefined}
+    >
+      <Download size="small" color="#fa0f48" />
+      {fetching ? "Fetching…" : label}
+    </button>
+  );
+}
 
 // ── Download All button ─────────────────────────────────────────────────────
 function DownloadAllButton({ href, label }) {
@@ -93,8 +143,55 @@ function SectionHeader({ title, downloadHref, downloadLabel }) {
   );
 }
 
+// ── Video download dropdown row — own component so useState is hook-safe ──
+function VideoDownloadRow({ opt, onDone }) {
+  const [fetching, setFetching] = React.useState(false);
+  const handleClick = async () => {
+    if (fetching) return;
+    setFetching(true);
+    await downloadFile(opt.url);
+    setFetching(false);
+    onDone();
+  };
+  return (
+    <div
+      onClick={handleClick}
+      style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        gap: "12px",
+        padding: "12px 16px",
+        borderBottom: "1px solid rgba(255,255,255,0.06)",
+        color: "white",
+        cursor: fetching ? "wait" : "pointer",
+        opacity: fetching ? 0.6 : 1,
+      }}
+    >
+      <div>
+        <div style={{ fontFamily: "'Anta', sans-serif", fontWeight: "bold", fontSize: "15px" }}>
+          {fetching ? "Fetching…" : opt.label}
+        </div>
+        {(opt.sizeMB || opt.quality) && (
+          <div style={{ color: "rgba(255,255,255,0.4)", fontSize: "12px", marginTop: "2px" }}>
+            {[opt.sizeMB && `${opt.sizeMB}MB`, opt.quality].filter(Boolean).join(" | ")}
+          </div>
+        )}
+      </div>
+      <div style={{
+        width: "36px", height: "36px", borderRadius: "8px",
+        backgroundColor: "rgba(255,255,255,0.1)",
+        display: "flex", alignItems: "center", justifyContent: "center",
+        flexShrink: 0,
+      }}>
+        <Download size="small" color="white" />
+      </div>
+    </div>
+  );
+}
+
 // ── Video download dropdown ───────────────────────────────────────────────
-function VideoDownloadMenu({ downloads }) {
+function VideoDownloadMenu({ downloads, openUp = false }) {
   const [open, setOpen] = React.useState(false);
   const ref = React.useRef(null);
 
@@ -124,7 +221,7 @@ function VideoDownloadMenu({ downloads }) {
       {open && (
         <div style={{
           position: "absolute",
-          top: "calc(100% + 8px)",
+          ...(openUp ? { bottom: "calc(100% + 8px)" } : { top: "calc(100% + 8px)" }),
           right: 0,
           minWidth: "300px",
           backgroundColor: "rgba(18,18,18,0.97)",
@@ -152,42 +249,9 @@ function VideoDownloadMenu({ downloads }) {
             >×</button>
           </div>
 
-          {/* Format rows */}
+          {/* Format rows — each in its own component so useState is hook-safe */}
           {downloads.map((opt) => (
-            <a
-              key={opt.label}
-              href={opt.url}
-              download
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                gap: "12px",
-                padding: "12px 16px",
-                borderBottom: "1px solid rgba(255,255,255,0.06)",
-                textDecoration: "none",
-                color: "white",
-              }}
-            >
-              <div>
-                <div style={{ fontFamily: "'Anta', sans-serif", fontWeight: "bold", fontSize: "15px" }}>
-                  {opt.label}
-                </div>
-                {(opt.sizeMB || opt.quality) && (
-                  <div style={{ color: "rgba(255,255,255,0.4)", fontSize: "12px", marginTop: "2px" }}>
-                    {[opt.sizeMB && `${opt.sizeMB}MB`, opt.quality].filter(Boolean).join(" | ")}
-                  </div>
-                )}
-              </div>
-              <div style={{
-                width: "36px", height: "36px", borderRadius: "8px",
-                backgroundColor: "rgba(255,255,255,0.1)",
-                display: "flex", alignItems: "center", justifyContent: "center",
-                flexShrink: 0,
-              }}>
-                <Download size="small" color="white" />
-              </div>
-            </a>
+            <VideoDownloadRow key={opt.label} opt={opt} onDone={() => setOpen(false)} />
           ))}
         </div>
       )}
@@ -197,7 +261,7 @@ function VideoDownloadMenu({ downloads }) {
 
 // ── Main component ─────────────────────────────────────────────────────────
 export default function PressKit() {
-  const { meta, contact, videos, screenshots, downloads } = pressKitData;
+  const { meta, contact, videos, promoArt, screenshots, downloads } = pressKitData;
 
   // <Grommet full> on the holding page injects html,body { height:100%; overflow:hidden }
   // via styled-components. Those rules persist across route changes, so we must
@@ -220,6 +284,8 @@ export default function PressKit() {
   const layerRefs    = React.useRef([]);
   const quickTosRef  = React.useRef([]);
   const screenshotRefs = React.useRef({});
+  const promoArtRefs = React.useRef({});
+  const videoRefs = React.useRef({});
   const [lightbox, setLightbox] = React.useState(null);
 
   // Scroll-driven parallax
@@ -365,24 +431,13 @@ export default function PressKit() {
                     weight="bold"
                     style={{ color: BRAND, letterSpacing: "0.08em", textTransform: "uppercase" }}
                   >
-                    Press Contact
+                    Contact
                   </Text>
                   <Anchor href={`mailto:${contact.press}`} color={BRAND} size="medium">
                     {contact.press}
                   </Anchor>
                 </Box>
-                <Box gap="xsmall">
-                  <Text
-                    size="xsmall"
-                    weight="bold"
-                    style={{ color: BRAND, letterSpacing: "0.08em", textTransform: "uppercase" }}
-                  >
-                    Business
-                  </Text>
-                  <Anchor href={`mailto:${contact.business}`} color={BRAND} size="medium">
-                    {contact.business}
-                  </Anchor>
-                </Box>
+              
               </Box>
 
               {/* Social links */}
@@ -402,6 +457,51 @@ export default function PressKit() {
             </Box>
           </Box>
 
+          {/* ── Promo Art ── */}
+          {promoArt.length > 0 && (
+            <Box>
+              <SectionHeader
+                title="Promo Art"
+                downloadHref={downloads.promoArtZip}
+                downloadLabel="Download All Promo Art"
+              />
+              <Grid
+                columns={{ count: "fill", size: ["260px", "1fr"] }}
+                gap="medium"
+              >
+                {promoArt.map((art) => (
+                  <Box
+                    key={art.title}
+                    ref={el => { promoArtRefs.current[art.title] = el; }}
+                    round="small"
+                    overflow="hidden"
+                    direction="column"
+                    justify="between"
+                    pad={{ horizontal: "medium", vertical: "medium" }}
+                    onClick={() => setLightbox(art)}
+                    onMouseEnter={() => bounceTween(promoArtRefs.current[art.title])}
+                    style={{
+                      backgroundColor: "rgba(0,0,0,0.35)",
+                      cursor: "pointer",
+                    }}
+                  >
+                    <Box flex>
+                      
+                      <ResponsiveImage
+                        name={art.imageName}
+                        alt={art.title}
+                        style={{ width: "100%", lineHeight: 0 }}
+                      />
+                    </Box>
+                    <Box pad={{ horizontal: "small", vertical: "xsmall" }}>
+                      <Text color="light-4" size="small">{art.title}</Text>
+                    </Box>
+                  </Box>
+                ))}
+              </Grid>
+            </Box>
+          )}
+
           {/* ── Videos ── */}
           {videos.length > 0 && (
             <Box>
@@ -410,39 +510,31 @@ export default function PressKit() {
                 downloadHref={downloads.videosZip}
                 downloadLabel="Download All Videos"
               />
-              <Box gap="large">
+              <Grid
+                columns={{ count: "fill", size: ["360px", "1fr"] }}
+                gap="medium"
+              >
                 {videos.map((video) => (
                   <Box
                     key={video.title}
-                    pad="medium"
                     round="small"
-                    gap="medium"
+                    overflow="hidden"
+                    direction="column"
+                    justify="between"
+                    onClick={() => setLightbox(video)}
+                    onMouseEnter={() => bounceTween(videoRefs.current[video.title])}
+                    ref={el => { videoRefs.current[video.title] = el; }}
                     style={{
                       backgroundColor: "rgba(0,0,0,0.35)",
-                      backdropFilter: "blur(4px)",
+                      cursor: "pointer",
                     }}
                   >
-                    <Box
-                      direction="row"
-                      align="center"
-                      justify="between"
-                      wrap
-                      gap="small"
-                    >
-                      <Heading level={3} color="light-3" margin="none">
-                        {video.title}
-                      </Heading>
-                      {video.downloads?.length > 0 && (
-                        <VideoDownloadMenu downloads={video.downloads} />
-                      )}
-                    </Box>
                     <div
                       style={{
                         width: "100%",
-                        maxWidth: "720px",
                         aspectRatio: "16 / 9",
-                        borderRadius: "8px",
                         overflow: "hidden",
+                        pointerEvents: "none",
                       }}
                     >
                       <iframe
@@ -456,12 +548,14 @@ export default function PressKit() {
                         allow="fullscreen; picture-in-picture"
                         allowFullScreen
                         title={video.title}
-                        
                       />
                     </div>
+                    <Box pad={{ horizontal: "small", vertical: "xsmall" }}>
+                      <Text color="light-4" size="small">{video.title}</Text>
+                    </Box>
                   </Box>
                 ))}
-              </Box>
+              </Grid>
             </Box>
           )}
 
@@ -469,7 +563,7 @@ export default function PressKit() {
           <Box>
             <SectionHeader
               title="Screenshots"
-              downloadHref={downloads.imagesZip}
+              downloadHref={downloads.screenshotsZip}
               downloadLabel="Download All Images"
             />
             <Grid
@@ -482,6 +576,8 @@ export default function PressKit() {
                   ref={el => { screenshotRefs.current[shot.title] = el; }}
                   round="small"
                   overflow="hidden"
+                  direction="column"
+                  justify="between"
                   onClick={() => setLightbox(shot)}
                   onMouseEnter={() => bounceTween(screenshotRefs.current[shot.title])}
                   style={{
@@ -489,11 +585,13 @@ export default function PressKit() {
                     cursor: "pointer",
                   }}
                 >
-                  <ResponsiveImage
-                    name={shot.imageName}
-                    alt={shot.title}
-                    style={{ width: "100%", lineHeight: 0 }}
-                  />
+                  <Box flex>
+                    <ResponsiveImage
+                      name={shot.imageName}
+                      alt={shot.title}
+                      style={{ width: "100%", lineHeight: 0 }}
+                    />
+                  </Box>
                   <Box pad={{ horizontal: "small", vertical: "xsmall" }}>
                     <Text color="light-4" size="small">{shot.title}</Text>
                   </Box>
@@ -545,16 +643,29 @@ export default function PressKit() {
               backgroundColor: "rgba(18,18,18,0.97)",
               borderRadius: "16px",
               overflow: "hidden",
-              maxWidth: "900px",
+              maxWidth: lightbox.vimeoId ? "960px" : "900px",
               width: "100%",
               boxShadow: "0 24px 80px rgba(0,0,0,0.8)",
+              overflow: "visible",
             }}
           >
-            <ResponsiveImage
-              name={lightbox.imageName}
-              alt={lightbox.title}
-              style={{ width: "100%", lineHeight: 0 }}
-            />
+            {lightbox.vimeoId ? (
+              <div style={{ width: "100%", aspectRatio: "16 / 9", borderRadius: "16px 16px 0 0", overflow: "hidden" }}>
+                <iframe
+                  src={`https://player.vimeo.com/video/${lightbox.vimeoId}?autoplay=1&title=0&byline=0&portrait=0&dnt=1`}
+                  style={{ display: "block", width: "100%", height: "100%", border: "none" }}
+                  allow="autoplay; fullscreen; picture-in-picture"
+                  allowFullScreen
+                  title={lightbox.title}
+                />
+              </div>
+            ) : (
+              <ResponsiveImage
+                name={lightbox.imageName}
+                alt={lightbox.title}
+                style={{ width: "100%", lineHeight: 0 }}
+              />
+            )}
             <Box
               direction="row"
               align="center"
@@ -563,10 +674,13 @@ export default function PressKit() {
             >
               <Text color="white" weight="bold">{lightbox.title}</Text>
               <Box direction="row" gap="small" align="center">
-                <a href={lightbox.downloadUrl} download style={dlBtnStyle} onMouseEnter={dlHoverIn} onMouseLeave={dlHoverOut}>
-                  <Download size="small" color="#fa0f48" />
-                  Download
-                </a>
+                {lightbox.vimeoId ? (
+                  lightbox.downloads?.length > 0 && (
+                    <VideoDownloadMenu downloads={lightbox.downloads} openUp />
+                  )
+                ) : (
+                  <DownloadFileButton url={lightbox.downloadUrl} />
+                )}
                 <button
                   onClick={() => setLightbox(null)}
                   onMouseEnter={dlHoverIn}
