@@ -16,10 +16,13 @@ export const pressKitData = {
   contact: {
     press: "entertainment@thelinestudio.com",
     social: [
-      { label: "Twitter / X", url: "https://x.com/thelinestudio" },
+      { label: "Steam", url: "https://store.steampowered.com/app/3174780/Deaths_Of_Peck" },
+      { label: "Discord",     url: "https://discord.gg/buWpGrhQRh" },
       { label: "Instagram",   url: "https://www.instagram.com/deathsofpeck" },
       { label: "YouTube",     url: "https://www.youtube.com/THELINEanimation" },
-      { label: "Discord",     url: "https://discord.gg/buWpGrhQRh" },
+      { label: "X", url: "https://x.com/thelinestudio" },
+    
+      
     ],
   },
 
@@ -42,7 +45,7 @@ export const pressKitData = {
           // To use Vimeo-hosted files, replace urls with those returned by a server
           // function calling GET https://api.vimeo.com/videos/{id}?fields=download
           downloads: [
-            { label: "Original", quality: "1920 × 1080", sizeMB: null, url: "https://firebasestorage.googleapis.com/v0/b/tls-bicho-peck-launch.firebasestorage.app/o/videos%2FDeaths%20Of%20Peck%20Launch%20Trailer%20Vertical.mp4?alt=media&token=e5dc11fe-668f-4d25-a720-bcc821e8f00e" },
+            { label: "Original", quality: "1920 × 1080", sizeMB: null, url: "https://firebasestorage.googleapis.com/v0/b/tls-bicho-peck-launch.firebasestorage.app/o/videos%2FDeaths%20Of%20Peck%20Launch%20Trailer.mp4?alt=media&token=c7f5aa60-db4f-499c-a0b5-b220be7ff1e6" }, 
             // { label: "1080p",    quality: "1920 × 1080", sizeMB: null, url: "/downloads/teaser-trailer-1080p.mp4"   },
             // { label: "720p",     quality: "1280 × 720",  sizeMB: null, url: "/downloads/teaser-trailer-720p.mp4"    },
             // { label: "540p",     quality: "960 × 540",   sizeMB: null, url: "/downloads/teaser-trailer-540p.mp4"    },
@@ -57,28 +60,28 @@ export const pressKitData = {
           // To use Vimeo-hosted files, replace urls with those returned by a server
           // function calling GET https://api.vimeo.com/videos/{id}?fields=download
           downloads: [
-            { label: "Original", quality: "1080 × 1920", sizeMB: null, url: "https://firebasestorage.googleapis.com/v0/b/tls-bicho-peck-launch.firebasestorage.app/o/videos%2FDeaths%20Of%20Peck%20Launch%20Trailer.mp4?alt=media&token=c7f5aa60-db4f-499c-a0b5-b220be7ff1e6" },
+            { label: "Original", quality: "1080 × 1920", sizeMB: null, url: "https://firebasestorage.googleapis.com/v0/b/tls-bicho-peck-launch.firebasestorage.app/o/videos%2FDeaths%20Of%20Peck%20Launch%20Trailer%20Vertical.mp4?alt=media&token=e5dc11fe-668f-4d25-a720-bcc821e8f00e" },
             // { label: "1080p",    quality: "1920 × 1080", sizeMB: null, url: "/downloads/teaser-trailer-1080p.mp4"   },
             // { label: "720p",     quality: "1280 × 720",  sizeMB: null, url: "/downloads/teaser-trailer-720p.mp4"    },
             // { label: "540p",     quality: "960 × 540",   sizeMB: null, url: "/downloads/teaser-trailer-540p.mp4"    },
             // { label: "360p",     quality: "640 × 360",   sizeMB: null, url: "/downloads/teaser-trailer-360p.mp4"    },
           ],
         },
-                {
-          title: "Playthrough",
-          vimeoId: "1208073023",
-          // Each entry: { label, quality, sizeMB (optional), url }
-          // Replace placeholder URLs with real paths on Firebase Storage / your CDN.
-          // To use Vimeo-hosted files, replace urls with those returned by a server
-          // function calling GET https://api.vimeo.com/videos/{id}?fields=download
-          downloads: [
-            { label: "Original", quality: "1920 × 1080", sizeMB: null, url: "https://firebasestorage.googleapis.com/v0/b/tls-bicho-peck-launch.firebasestorage.app/o/videos%2FDeaths_Of_Peck_Prototype_Playthrough.mp4?alt=media&token=bd1e02c7-143a-43e4-bb64-b5bd676bc409" },
-            // { label: "1080p",    quality: "1920 × 1080", sizeMB: null, url: "/downloads/teaser-trailer-1080p.mp4"   },
-            // { label: "720p",     quality: "1280 × 720",  sizeMB: null, url: "/downloads/teaser-trailer-720p.mp4"    },
-            // { label: "540p",     quality: "960 × 540",   sizeMB: null, url: "/downloads/teaser-trailer-540p.mp4"    },
-            // { label: "360p",     quality: "640 × 360",   sizeMB: null, url: "/downloads/teaser-trailer-360p.mp4"    },
-          ],
-        },
+        //         {
+        //   title: "Playthrough",
+        //   vimeoId: "1208073023",
+        //   // Each entry: { label, quality, sizeMB (optional), url }
+        //   // Replace placeholder URLs with real paths on Firebase Storage / your CDN.
+        //   // To use Vimeo-hosted files, replace urls with those returned by a server
+        //   // function calling GET https://api.vimeo.com/videos/{id}?fields=download
+        //   downloads: [
+        //     { label: "Original", quality: "1920 × 1080", sizeMB: null, url: "https://firebasestorage.googleapis.com/v0/b/tls-bicho-peck-launch.firebasestorage.app/o/videos%2FDeaths_Of_Peck_Prototype_Playthrough.mp4?alt=media&token=bd1e02c7-143a-43e4-bb64-b5bd676bc409" },
+        //     // { label: "1080p",    quality: "1920 × 1080", sizeMB: null, url: "/downloads/teaser-trailer-1080p.mp4"   },
+        //     // { label: "720p",     quality: "1280 × 720",  sizeMB: null, url: "/downloads/teaser-trailer-720p.mp4"    },
+        //     // { label: "540p",     quality: "960 × 540",   sizeMB: null, url: "/downloads/teaser-trailer-540p.mp4"    },
+        //     // { label: "360p",     quality: "640 × 360",   sizeMB: null, url: "/downloads/teaser-trailer-360p.mp4"    },
+        //   ],
+        // },
       ]
     : [],
 
@@ -96,7 +99,7 @@ export const pressKitData = {
     {
       title: "Text Logo",
       imageName: "DOP_Logo",
-      downloadUrl: "https://firebasestorage.googleapis.com/v0/b/tls-bicho-peck-launch.firebasestorage.app/o/promo%2Fdeaths_of_peck_logo.png?alt=media",
+      downloadUrl: "https://firebasestorage.googleapis.com/v0/b/tls-bicho-peck-launch.firebasestorage.app/o/promo%2Fdeaths_of_peck_logo_alpha.png?alt=media",
     },
     {
       title: "Banner Logo",

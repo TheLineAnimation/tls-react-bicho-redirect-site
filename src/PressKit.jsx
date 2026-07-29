@@ -642,7 +642,7 @@ export default function PressKit() {
             style={{
               backgroundColor: "rgba(18,18,18,0.97)",
               borderRadius: "16px",
-              overflow: "hidden",
+              // overflow: "hidden",
               maxWidth: lightbox.vimeoId ? "960px" : "900px",
               width: "100%",
               boxShadow: "0 24px 80px rgba(0,0,0,0.8)",
